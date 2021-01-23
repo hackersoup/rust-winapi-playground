@@ -1,9 +1,3 @@
-# Windows-RS Template
+# My Windows API Playground for Rust
 
-Template project for creating a windows-rs project. Complete with
-a cached bindings crate, configured to output an IDE-ingestible
-rust file.
-
-To use this template, run:
-
-> `cargo generate --git https://github.com/hackersoup/windows_rs_template --name myproject`
+Random collection of windows API interactions and stuff with Rust bindings.
