@@ -2,16 +2,14 @@ extern crate rand;
 use std::{
     thread,
     time,
+    ptr,
 };
 use rand::Rng;
 
-use bindings::windows::win32::{
-    menus_and_resources::{
+use bindings::windows::win32::{display_devices::POINT, ipc::CreateNamedPipeA, menus_and_resources::{
         GetCursorPos,
         SetCursorPos,
-    },
-    display_devices::POINT
-};
+    }};
 
 /// Uses `println!` when in debug mode, otherwise does nothing
 macro_rules! println_debug {
@@ -38,6 +36,28 @@ fn main() -> windows::Result<()> {
     // Wait for a newline to continue
     std::io::stdin().read_line(&mut String::new()).unwrap();
     Ok(())
+}
+
+fn named_pipe_server(pipe_name: &str) {
+    /*
+    TODO:
+        - Change arguments to a more idiomatic way than just the raw string.
+        - Some way to encrypt strings at compile time.
+        - More customization of the pipe settings.
+    */
+
+    unsafe {
+        // https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createnamedpipea
+        let pipe = CreateNamedPipeA(
+            pipe_name.as_ptr() as *const i8,
+            3, // PIPE_ACCESS_DUPLEX (couldn't find a definition in the crate)
+            0, // Byte-type pipe mode
+            255, // PIPE_UNLIMITED_INSTANCES
+            4096,
+            4069,
+            200,
+            ptr::null_mut());
+    }
 }
 
 fn shake_mouse() {

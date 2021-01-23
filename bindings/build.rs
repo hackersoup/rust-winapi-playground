@@ -5,5 +5,6 @@ fn main() {
             SetCursorPos,
         }
         windows::win32::display_devices::POINT
+        windows::win32::ipc::CreateNamedPipeA
     );
 }
